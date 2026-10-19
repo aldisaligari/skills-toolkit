@@ -53,18 +53,20 @@ Librerías **vendorizadas** (copiadas al repo en `/vendor`), no CDN: GSAP 3.12.5
 
 ## 4. Patrones que usamos
 
-### 4.1 Túnel 3D de capturas (hero)
-Cards con `translate3d(x, y, z)` dentro de una escena `preserve-3d` con `perspective: 1000px`. El scroll mueve la "cámara" (`camZ = progress × 5300`) y cada card se acerca y te atraviesa.
-- Opacidad por distancia: aparece entre z −4600 y −3100, se va entre +300 y +900.
-- **Mientras el nombre está en pantalla, las cards bajan su opacidad** (0.3 en mobile, 0.6 en desktop) → el texto se lee primero.
-- Mouse (solo desktop): la escena rota ±9°/±6° con `gsap.quickTo`.
-- La última card (la del primer proyecto) queda centrada y grande: es el "portal" al capítulo de trabajo.
+### 4.1 Portada: nombre → manifiesto, con órbitas de texto
+(Reemplazó al túnel 3D de capturas: no hace falta mostrar los trabajos arriba, el diseño y el motion ya hablan.)
+- Sección sticky de 300vh con un fondo propio (`.hero-bg`) que el scroll pasa de papel a azul `#1c3fff`. Los colores internos son variables locales del stage (`--h-fg`, `--o1`, `--o2`) para no pelear con la atmósfera global.
+- Entrada: `ALDANA` (Unbounded) + *Saligari* (serif itálica) se arman letra por letra: `yPercent 120, rotationX -95 → 0`, stagger 0.05.
+- Con el scroll las letras se van hacia arriba girando y se arma **"NADA ES / porque sí."** con el mismo gesto que el cierre.
+- Dos anillos SVG (`textPath`): uno mono en mayúsculas y otro serif itálica, girando solos en sentidos opuestos (90 s / 70 s) + un punto que orbita. El scroll suma rotación y escala al conjunto; en desktop, el mouse inclina las órbitas en 3D.
+- Al principio el anillo serif va al 42% de opacidad para no pelear con el nombre.
+- Las líneas en mayúsculas se ajustan al ancho con el mismo *fit tipo póster* del cierre (ver 6.1). El contenedor tiene que tener `width:100%` o mide su propio contenido.
 
 ### 4.2 Historia sticky por proyecto (el corazón del portfolio)
 Inspirado en animos.app (ventana de browser) + la narración de aldisaligari.com:
 1. **Entrada mientras la sección entra a pantalla** (`start:'top 92%' → end:'top 8%'`): la ventana se levanta del "piso" (`rotationX 30 → 0`, `scale .82 → 1`). ⚠️ Si la entrada empieza en `top top`, el proyecto llega vacío.
 2. **Narración**: la ventana tiene un *strip* vertical con N capturas. Timeline scrubeado: *pausa → desliza un panel (`power3.inOut`) → pausa…* (`yPercent: -100 × i / N`). La pausa es lo que la hace sentir narrada y no una cinta.
-3. **Captions sincronizados**: lista numerada al costado; el ítem activo se calcula desde `tl.time()` (funciona igual subiendo).
+3. **Subtítulo vivo**: una sola línea en serif itálica con un punto que late, que cambia con cada beat (como un subtítulo de película). Nada de listas numeradas con separadores. El beat activo se calcula desde `tl.time()` (funciona igual subiendo).
 4. **Profundidad**: 2 capturas chicas flotando (`.float`) con distinto `data-depth` → parallax a distinta velocidad.
 5. **Palabra gigante de fondo** con `-webkit-text-stroke` que se desliza horizontal todo el rato (capa más lejana).
 6. **Salida**: la ventana se hunde (`rotationX -10`, `scale .9`).

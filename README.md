@@ -6,7 +6,13 @@ Colección curada de herramientas **gratuitas**, snippets de código y referenci
 
 ---
 
-## 🌀 NUEVO — Scroll inmersivo (Lenis + GSAP)
+## ✍️ Voz y criterios (leer primero)
+
+Mi manifiesto, cómo repartirlo en una página y la lista de cosas que se ven "hechas por IA" y no van nunca → [`voz-y-criterios.md`](voz-y-criterios.md)
+
+---
+
+## 🌀 Scroll inmersivo (Lenis + GSAP)
 
 Todo lo aprendido en el rediseño del portfolio (oct. 2026): reglas para que el scroll **no se sienta trabado**, túnel 3D, historias sticky con captions narrados, atmósfera de color por sección, velocidad del scroll como input y vista en vivo de sitios.
 
