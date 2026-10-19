@@ -12,6 +12,12 @@ Mi manifiesto, cómo repartirlo en una página y la lista de cosas que se ven "h
 
 ---
 
+## 📓 Bitácora
+
+- [19/10/2026 · Rediseño del portfolio](bitacora/2026-10-19-portfolio.md): cómo quedó, qué me encantó, qué no va, bugs y cómo trabajamos.
+
+---
+
 ## 🌀 Scroll inmersivo (Lenis + GSAP)
 
 Todo lo aprendido en el rediseño del portfolio (oct. 2026): reglas para que el scroll **no se sienta trabado**, túnel 3D, historias sticky con captions narrados, atmósfera de color por sección, velocidad del scroll como input y vista en vivo de sitios.
