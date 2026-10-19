@@ -14,7 +14,7 @@ Referencia para escribir y diseñar cualquier cosa con mi nombre (portfolio, mar
   - Manifiesto → *"Veo el marketing como hacer arte para conectar con las personas. Lo literal me aburre."*
   - Capítulo creativo → *"Cada marca es un universo."*
   - SaaS → *"Del otro lado siempre hay humanos que deciden con emociones."*
-  - Sobre mí → IA como potenciadora, siempre con dirección artística humana; contra los ladrones de atención.
+  - Sobre mí → título *"Me gusta el arte."* (guiño al video que todos conocen; más humilde que "Soy artista"), IA como potenciadora siempre con dirección artística humana, contra los ladrones de atención.
 - Corregir gramática sí; **cambiar mi voz no**.
 - Hablar en primera persona, con voseo rioplatense ("bajá", "escribime", "tenés").
 
