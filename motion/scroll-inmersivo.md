@@ -92,15 +92,29 @@ Antes, chequear que el sitio no mande `X-Frame-Options` / `frame-ancestors` (Wor
 Punto que sigue al mouse (`quickTo` 0.35 s), crece a 96 px con texto ("Explorar") sobre `[data-cursor]` y desaparece sobre links/botones. Solo `(hover:hover) and (pointer:fine)`.
 
 ## 5. Mobile (que también diga "OOOO")
-- Mismo relato, mismo scroll: nada de "versión simplificada" salvo lo que no aporta (descripción larga y tags se ocultan; quedan título, captions y CTA).
-- Ventana arriba, texto abajo (`order: -1`).
+- Mismo relato, mismo scroll: nada de "versión simplificada" salvo lo que no aporta (descripción larga y tags se ocultan).
+- **El aire tiene que ser intencional.** Cada pantalla sticky se arma como un póster de 3 bloques:
+  `encabezado (nº, título, rol)` → `ventana` → `subtítulo + CTA`.
+  Truco: `.p-meta{display:contents}` para que sus hijos sean ítems del flex column del stage, ordenarlos con `order`, y a la ventana darle `margin:auto 0` → el espacio sobrante se reparte igual arriba y abajo. ⚠️ Poner `align-items:stretch` o la ventana se encoge.
+- **Captions como subtítulos**: en mobile se muestra solo el beat activo, grande, en serif itálica (como un subtítulo de película) en vez de la lista entera.
+- Nada de `justify-content:center` en el stage mobile: deja huecos enormes arriba antes de la ventana.
 - Alturas `100svh` (no `vh`) para que la barra del navegador no haga saltar el sticky.
 - Tocar la ventana abre el sitio (no modal).
+- Probar SIEMPRE en 390×844 y en 375×667 (iPhone SE): si entra ahí, entra en todos.
 
-## 6. Capturas para las ventanas
-- Sacadas con Claude in Chrome (`window.scrollTo` + screenshot a escala 1), recortando la scrollbar (17 px).
-- WebP 1440 px q74 (~60–120 KB) + versión `-sm` 560 px para el túnel.
-- Ratio fijo `1440/736` con `aspect-ratio` → cero layout shift.
+## 6. Capturas para las ventanas (nítidas y completas)
+- ⚠️ **Bug que nos pasó:** `<img width="1440" height="736">` + CSS `aspect-ratio` **no alcanza**: el atributo `height` se aplica como altura fija en CSS → la imagen queda de 736 px de alto dentro de una ventana más chica, `object-fit:cover` la amplía ~1.75× y la recorta (se veía "cortada y pixelada"). Solución: **`height:auto`** en el CSS de la imagen.
+- Resolución: la captura normal de Chrome sale al tamaño CSS (1536 px). Para más definición, el *zoom* de Claude in Chrome devuelve píxeles reales del dispositivo (×1.25 en la compu de Aldi): capturar mitad izquierda + mitad derecha y unirlas → ~1900 px. Pausar los `<video>` antes (`v.pause()`), si no la captura se cuelga.
+- Lo que se puede renderizar localmente (la landing de PXSOL) → Playwright con `deviceScaleFactor: 2`.
+- Exportar WebP ~1900 px q86 (40–140 KB) + versión `-sm` 720 px para el túnel/floats.
+- Ratio fijo `1519/776` (viewport sin scrollbar) con `aspect-ratio` → cero layout shift.
+
+## 6.1 Pieza tipográfica de cierre ("ACTIVEMOS el arte DE TU MARCA")
+- Sección sticky **sin nada clickeable** (`pointer-events:none`): solo motion que empuja al contacto con una flecha que respira.
+- Letras que se arman con el scroll: `yPercent 120 + rotationX -95 → 0`, stagger por línea, `perspective` en el título.
+- **Fit tipo póster con JS**: cada línea en mayúsculas se mide a 100 px y se escala para llenar exactamente el ancho disponible → funciona en ES/EN y en cualquier pantalla. Re-medir con `document.fonts.ready`, `resize` y al cambiar idioma.
+- Capas de profundidad: anillo de texto SVG (`textPath`) que gira con el scroll + banda de outline inclinada que se desplaza.
+- Ojo con el split por letras: los espacios como `inline-block` colapsan → reemplazar `' '` por `' '`.
 
 ## 7. Referencias
 - **Lenis** — https://lenis.darkroom.engineering/
