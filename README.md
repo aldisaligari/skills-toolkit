@@ -6,6 +6,18 @@ Colección curada de herramientas **gratuitas**, snippets de código y referenci
 
 ---
 
+## 🌀 NUEVO — Scroll inmersivo (Lenis + GSAP)
+
+Todo lo aprendido en el rediseño del portfolio (oct. 2026): reglas para que el scroll **no se sienta trabado**, túnel 3D, historias sticky con captions narrados, atmósfera de color por sección, velocidad del scroll como input y vista en vivo de sitios.
+
+- 📖 Recetario completo → [`motion/scroll-inmersivo.md`](motion/scroll-inmersivo.md)
+- ✂️ Setup base Lenis + GSAP (+ temas y marquee por velocidad) → [`snippets/lenis-gsap-setup.js`](snippets/lenis-gsap-setup.js)
+- ✂️ "Historia sticky" lista para copiar → [`snippets/sticky-story.html`](snippets/sticky-story.html)
+
+**TL;DR:** scroll nativo + Lenis (`lerp .09`, `syncTouch:false`), un solo RAF (ticker de GSAP), `position: sticky` en vez de `pin`, `scrub: true`, solo `transform`/`opacity`, y todo como mejora progresiva (`.motion` en `<html>`).
+
+---
+
 ## ⭐ Emil Kowalski — referencia obligada (taste + animación de interfaces)
 
 Design engineer, ex-Vercel. Su laburo es probablemente la mejor referencia gratuita que hay hoy de "cómo animar interfaces con criterio" (no animar por animar). Vale la pena estudiarlo en detalle antes de tocar el portfolio.
@@ -199,7 +211,9 @@ html {
 
 ## Ideas para cuando retomemos el portfolio
 
-- [ ] Definir 1 sola librería de motion principal (probablemente GSAP + Lenis) para no mezclar herramientas.
-- [ ] Usar `reveal-on-scroll` para las secciones y `magnetic-hover` en los CTAs.
+- [x] Definir 1 sola librería de motion principal → **GSAP + Lenis** (ver recetario).
+- [x] Usar reveals en las secciones y `magnetic-hover` en los CTAs.
+- [ ] Sumar el caso **PXSOL Vacation Rental** (identidad) cuando se lance.
+- [ ] Sumar más casos al capítulo SaaS.
 - [ ] Sacar paleta de color con Realtime Colors antes de tocar código.
 - [ ] Buscar 3 referencias en Godly/Land-book de portfolios de perfiles similares (dev + creativo) antes de arrancar.

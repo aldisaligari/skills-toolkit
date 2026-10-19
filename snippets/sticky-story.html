@@ -1,0 +1,99 @@
+<!doctype html>
+<!--
+  Snippet: "historia sticky" — una ventana de browser que se recorre sola con el scroll,
+  con captions narrados y entrada 3D. Lenis + GSAP ScrollTrigger. Copiar/pegar y cambiar imágenes.
+  Ver explicación en /motion/scroll-inmersivo.md
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sticky story — snippet</title>
+<script>
+  var d = document.documentElement; d.classList.add('js');
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('motion');
+</script>
+<style>
+  body{ margin:0; font-family:ui-monospace, monospace; background:#0b0b0b; color:#eee; }
+  .spacer{ height:80vh; display:grid; place-items:center; opacity:.5; }
+  .story{ position:relative; }
+  .motion .story{ height:calc(var(--panels) * 85vh + 140vh); }      /* largo = cantidad de "beats" */
+  .stage{ min-height:100svh; display:grid; grid-template-columns:1fr 1.6fr; gap:48px; align-items:center; padding:80px 5vw; box-sizing:border-box; overflow:hidden; }
+  .motion .stage{ position:sticky; top:0; height:100svh; }          /* sticky > pin: cero saltos */
+  .caps{ list-style:none; padding:0; }
+  .caps li{ padding:10px 0; border-bottom:1px solid #333; color:#777; transition:color .4s, padding-left .5s; }
+  .caps li.on{ color:#fff; padding-left:8px; }
+  .visual{ perspective:1600px; }
+  .frame{ border-radius:12px; overflow:hidden; background:#1c1c1c; box-shadow:0 50px 100px -30px #000; transform-origin:50% 80%; }
+  .bar{ height:32px; background:#222; }
+  .viewport{ aspect-ratio:16/9; overflow:hidden; position:relative; }
+  .strip{ position:absolute; inset:0 auto auto 0; width:100%; }
+  .strip img{ display:block; width:100%; aspect-ratio:16/9; object-fit:cover; }
+  @media (max-width:900px){ .stage{ grid-template-columns:1fr; } .visual{ order:-1; } }
+</style>
+</head>
+<body>
+<div class="spacer">scroll ↓</div>
+
+<section class="story" style="--panels:3">
+  <div class="stage">
+    <div>
+      <h2>Proyecto</h2>
+      <ol class="caps">
+        <li class="on">Beat 1 — hero</li>
+        <li>Beat 2 — sección</li>
+        <li>Beat 3 — detalle</li>
+      </ol>
+    </div>
+    <div class="visual">
+      <div class="frame">
+        <div class="bar"></div>
+        <div class="viewport"><div class="strip">
+          <img src="https://picsum.photos/seed/a/1440/810" alt="">
+          <img src="https://picsum.photos/seed/b/1440/810" alt="">
+          <img src="https://picsum.photos/seed/c/1440/810" alt="">
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="spacer">fin</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+if (document.documentElement.classList.contains('motion')) {
+  gsap.registerPlugin(ScrollTrigger);
+  const lenis = new Lenis({ lerp: .09, syncTouch: false });
+  lenis.on('scroll', ScrollTrigger.update);
+  gsap.ticker.add(t => lenis.raf(t * 1000)); gsap.ticker.lagSmoothing(0);
+
+  document.querySelectorAll('.story').forEach(story => {
+    const frame = story.querySelector('.frame'), strip = story.querySelector('.strip');
+    const N = strip.children.length, caps = [...story.querySelectorAll('.caps li')];
+
+    // 1) entrada MIENTRAS la sección entra en pantalla
+    gsap.fromTo(frame, { rotationX: 30, yPercent: 26, scale: .82, opacity: .25 },
+      { rotationX: 0, yPercent: 0, scale: 1, opacity: 1, ease: 'power2.out',
+        scrollTrigger: { trigger: story, start: 'top 92%', end: 'top 8%', scrub: true } });
+
+    // 2) narración: pausa → desliza → pausa …
+    const T0 = .3, HOLD = .55, GLIDE = 1;
+    const tl = gsap.timeline({ scrollTrigger: { trigger: story, start: 'top top', end: 'bottom bottom', scrub: true } });
+    let t = T0;
+    for (let i = 1; i < N; i++) { t += HOLD; tl.to(strip, { yPercent: -100 * i / N, duration: GLIDE, ease: 'power3.inOut' }, t); t += GLIDE; }
+    t += HOLD;
+    tl.to(frame, { rotationX: -10, scale: .9, duration: .9, ease: 'power2.in' }, t);   // 3) salida
+
+    // captions desde el tiempo del timeline (funciona subiendo y bajando)
+    tl.eventCallback('onUpdate', () => {
+      let idx = 0, tt = T0;
+      for (let k = 1; k < N; k++) { tt += HOLD; if (tl.time() >= tt + GLIDE / 2) idx = k; tt += GLIDE; }
+      caps.forEach((li, k) => li.classList.toggle('on', k === idx));
+    });
+  });
+}
+</script>
+</body>
+</html>
